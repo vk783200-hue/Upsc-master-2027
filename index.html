@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#12385a">
+<title>UPSC MASTER 2027</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon-192.png">
+<style>
+:root{--navy:#12385a;--pale:#eaf1f8;--ink:#172638;--muted:#657486}
+*{box-sizing:border-box}body{margin:0;background:#f3f6fa;color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans Devanagari",sans-serif}
+header{background:linear-gradient(120deg,#12385a,#23618a);color:white;padding:24px 18px 30px}
+header h1{margin:0 0 5px;font-size:25px}header p{margin:0;opacity:.9}
+main{max-width:850px;margin:auto;padding:16px}
+.stats,.card{background:white;border:1px solid #e1e8ef;border-radius:20px;padding:18px;margin:0 0 14px;box-shadow:0 3px 12px #15324a0a}
+.stats{display:flex;gap:12px;flex-wrap:wrap}.stat{flex:1;min-width:110px}.stat b{display:block;font-size:22px;color:var(--navy)}
+nav{display:flex;gap:8px;overflow:auto;margin:16px 0}nav button,.btn{border:0;border-radius:13px;background:#e2ebf4;color:var(--navy);padding:12px 16px;font-weight:700;white-space:nowrap}
+nav button.active,.btn.primary{background:var(--navy);color:white}
+h2{font-size:21px;margin:0 0 12px}h3{margin:10px 0 5px}p,li{line-height:1.65}.muted{color:var(--muted)}
+.note{background:#f6f9fc;border-left:4px solid #2c6c9b;padding:12px;border-radius:10px;margin:10px 0}
+input,textarea,select{width:100%;padding:12px;border:1px solid #cbd7e2;border-radius:12px;font:inherit;margin:6px 0 12px}
+textarea{min-height:130px}.btn{margin:5px 5px 5px 0;cursor:pointer}
+.option{display:block;background:#f2f6fa;border:1px solid #dce6ef;border-radius:12px;padding:12px;margin:8px 0;text-align:left;width:100%;font:inherit}
+.good{color:#187344;font-weight:700}.bad{color:#b23a32;font-weight:700}
+.hidden{display:none}.hand{font-family:"Comic Sans MS","Segoe Print",cursive;line-height:1.8}
+footer{text-align:center;color:var(--muted);padding:20px;font-size:13px}
+</style>
+</head>
+<body>
+<header><h1>🎓 UPSC MASTER 2027</h1><p>Hindi Medium · Prelims + Mains · Beginner to Advanced</p></header>
+<main>
+<section class="stats">
+ <div class="stat"><span class="muted">लक्ष्य परीक्षा</span><b>23 मई 2027</b><small>Prelims लक्ष्य तिथि</small></div>
+ <div class="stat"><span class="muted">आपकी प्रगति</span><b id="progress">0%</b><small>टॉपिक पूरे</small></div>
+ <div class="stat"><span class="muted">सेव नोट्स</span><b id="count">0</b><small>आपके डिवाइस पर</small></div>
+</section>
+<nav id="nav">
+<button class="active" data-tab="home">होम</button><button data-tab="notes">नोट्स</button><button data-tab="quiz">MCQ टेस्ट</button><button data-tab="write">उत्तर लेखन</button><button data-tab="plan">पढ़ाई योजना</button>
+</nav>
+<section id="home" class="tab">
+ <div class="card"><h2>आज की पढ़ाई</h2><p>एक समय में एक विषय पढ़ें। पहले अवधारणा समझें, फिर तथ्य याद करें और अंत में प्रश्न हल करें।</p>
+ <div class="note"><b>आज का क्रम:</b><ol><li>राजव्यवस्था: संविधान की प्रस्तावना</li><li>इतिहास: आधुनिक भारत की समयरेखा</li><li>भूगोल: पृथ्वी की आंतरिक संरचना</li><li>25 MCQ और 1 छोटा उत्तर</li></ol></div>
+ <button class="btn primary" onclick="showTab('notes')">नोट्स पढ़ें</button><button class="btn" onclick="showTab('quiz')">MCQ शुरू करें</button></div>
+ <div class="card"><h2>नोट्स में क्या याद रखें?</h2><ul><li><b>समझें:</b> कारण, प्रक्रिया, प्रभाव और अवधारणाएँ।</li><li><b>याद करें:</b> अनुच्छेद, महत्वपूर्ण तिथियाँ, संस्थाएँ और परिभाषाएँ।</li><li><b>अभ्यास करें:</b> MCQ, मानचित्र और उत्तर लेखन।</li></ul></div>
+</section>
+<section id="notes" class="tab hidden">
+ <div class="card"><h2>डिजिटल नोट्स</h2><input id="search" placeholder="नोट्स खोजें…" oninput="renderNotes()">
+ <label><input type="checkbox" id="hand" style="width:auto" onchange="renderNotes()"> हस्तलिखित-जैसा दृश्य</label>
+ <div id="notesList"></div></div>
+ <div class="card"><h2>अपना नोट जोड़ें</h2><input id="ntitle" placeholder="शीर्षक"><textarea id="nbody" placeholder="अपने नोट्स यहाँ लिखें…"></textarea><button class="btn primary" onclick="addNote()">नोट सेव करें</button></div>
+</section>
+<section id="quiz" class="tab hidden">
+ <div class="card"><h2>प्रारंभिक MCQ अभ्यास</h2><div id="question"></div><div id="feedback"></div><button class="btn primary" onclick="nextQ()">अगला प्रश्न</button><p class="muted" id="score"></p></div>
+</section>
+<section id="write" class="tab hidden">
+ <div class="card"><h2>उत्तर लेखन अभ्यास</h2><p><b>प्रश्न:</b> भारतीय संविधान की प्रस्तावना के महत्व की विवेचना कीजिए। (150 शब्द)</p><textarea id="answer" placeholder="अपना उत्तर यहाँ लिखें…"></textarea><button class="btn primary" onclick="saveAnswer()">उत्तर सेव करें</button><span id="saved"></span></div>
+</section>
+<section id="plan" class="tab hidden">
+ <div class="card"><h2>दैनिक अध्ययन चेकलिस्ट</h2><p>हर दिन पूरा होने पर टिक करें। प्रगति इसी डिवाइस में सेव होगी।</p>
+ <div id="tasks"></div><button class="btn" onclick="resetTasks()">आज की चेकलिस्ट रीसेट</button></div>
+</section>
+</main><footer>UPSC MASTER 2027 · आपकी पढ़ाई, आपकी गति · डेटा इसी ब्राउज़र में सेव होता है</footer>
+<script>
+const baseNotes=[
+{title:"संविधान की प्रस्तावना",body:"प्रस्तावना संविधान के उद्देश्यों और दर्शन को व्यक्त करती है। इसमें भारत को संपूर्ण प्रभुत्व-संपन्न, समाजवादी, पंथनिरपेक्ष, लोकतंत्रात्मक गणराज्य कहा गया है। न्याय, स्वतंत्रता, समता और बंधुता इसके प्रमुख आदर्श हैं।\\n\\nयाद रखें: 42वें संविधान संशोधन अधिनियम, 1976 द्वारा ‘समाजवादी’, ‘पंथनिरपेक्ष’ और ‘अखंडता’ शब्द जोड़े गए।"},
+{title:"संविधान सभा",body:"संविधान सभा का गठन कैबिनेट मिशन योजना, 1946 के आधार पर हुआ। इसकी पहली बैठक 9 दिसंबर 1946 को हुई। डॉ. सच्चिदानंद सिन्हा अस्थायी अध्यक्ष और डॉ. राजेंद्र प्रसाद स्थायी अध्यक्ष बने। प्रारूप समिति का गठन 29 अगस्त 1947 को हुआ और इसके अध्यक्ष डॉ. बी. आर. आंबेडकर थे। संविधान 26 नवंबर 1949 को अंगीकृत तथा 26 जनवरी 1950 को लागू हुआ।"},
+{title:"आधुनिक भारत: शुरुआती रूपरेखा",body:"आधुनिक भारत के अध्ययन में यूरोपीय कंपनियों का आगमन, ब्रिटिश सत्ता का विस्तार, 1857 का विद्रोह, सामाजिक-धार्मिक सुधार आंदोलन और राष्ट्रीय आंदोलन को कालक्रम में पढ़ें। घटनाओं के कारण, नेतृत्व, क्षेत्रीय प्रसार और परिणाम पर विशेष ध्यान दें।"},
+{title:"भूगोल: पृथ्वी की आंतरिक संरचना",body:"पृथ्वी की प्रमुख परतें भूपर्पटी, मैंटल और क्रोड हैं। भूपर्पटी सबसे बाहरी ठोस परत है। मैंटल पृथ्वी के आयतन का बड़ा भाग बनाता है। क्रोड मुख्यतः लौह और निकेल से संबंधित माना जाता है। भूकंपीय तरंगों से आंतरिक संरचना की जानकारी मिलती है।"},
+{title:"अर्थव्यवस्था: GDP",body:"सकल घरेलू उत्पाद (GDP) एक निश्चित अवधि में देश की भौगोलिक सीमा के भीतर उत्पादित अंतिम वस्तुओं और सेवाओं के मौद्रिक मूल्य को दर्शाता है। वास्तविक GDP में स्थिर कीमतों का उपयोग होता है, जबकि नाममात्र GDP में चालू कीमतों का।"},
+{title:"पर्यावरण: पारिस्थितिकी तंत्र",body:"पारिस्थितिकी तंत्र में जैविक घटक (पौधे, जीव, सूक्ष्मजीव) और अजैविक घटक (जल, वायु, मिट्टी, प्रकाश) परस्पर क्रिया करते हैं। ऊर्जा का प्रवाह सामान्यतः एक दिशा में होता है और पोषक तत्वों का चक्रण होता है।"},
+{title:"PSIR: राजनीतिक सिद्धांत",body:"राजनीतिक सिद्धांत राज्य, सत्ता, अधिकार, स्वतंत्रता, समानता, न्याय और लोकतंत्र जैसी अवधारणाओं का व्यवस्थित अध्ययन है। उत्तर लिखते समय परिभाषा, विचारक, तर्क, आलोचना और समकालीन उदाहरण का संतुलित उपयोग करें।"}
+];
+let userNotes=JSON.parse(localStorage.getItem("um_notes")||"[]");
+function allNotes(){return [...baseNotes,...userNotes]}
+function renderNotes(){let q=(document.getElementById('search')?.value||'').toLowerCase();let hand=document.getElementById('hand')?.checked;document.getElementById('notesList').innerHTML=allNotes().filter(n=>(n.title+n.body).toLowerCase().includes(q)).map(n=>`<div class="note ${hand?'hand':''}"><h3>${esc(n.title)}</h3><p>${esc(n.body).replaceAll('\\n','<br>')}</p></div>`).join('')||'कोई नोट नहीं मिला।';document.getElementById('count').textContent=userNotes.length}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function addNote(){let title=document.getElementById('ntitle').value.trim(),body=document.getElementById('nbody').value.trim();if(!title||!body){alert('शीर्षक और नोट दोनों लिखें।');return}userNotes.unshift({title,body});localStorage.setItem('um_notes',JSON.stringify(userNotes));document.getElementById('ntitle').value='';document.getElementById('nbody').value='';renderNotes();alert('नोट सेव हो गया।')}
+const qs=[{q:"भारतीय संविधान कब लागू हुआ?",o:["15 अगस्त 1947","26 जनवरी 1950","26 नवंबर 1949","2 अक्टूबर 1950"],a:1,e:"संविधान 26 नवंबर 1949 को अंगीकृत और 26 जनवरी 1950 को लागू हुआ।"},{q:"प्रारूप समिति के अध्यक्ष कौन थे?",o:["डॉ. राजेंद्र प्रसाद","जवाहरलाल नेहरू","डॉ. बी. आर. आंबेडकर","सरदार पटेल"],a:2,e:"प्रारूप समिति का गठन 29 अगस्त 1947 को हुआ; अध्यक्ष डॉ. बी. आर. आंबेडकर थे।"},{q:"पृथ्वी की सबसे बाहरी प्रमुख परत कौन-सी है?",o:["मैंटल","बाह्य क्रोड","आंतरिक क्रोड","भूपर्पटी"],a:3,e:"भूपर्पटी पृथ्वी की सबसे बाहरी ठोस परत है।"}];
+let qi=0,score=0,answered=false;
+function loadQ(){let q=qs[qi%qs.length];answered=false;document.getElementById('feedback').textContent='';document.getElementById('question').innerHTML=`<p><b>प्रश्न ${qi%qs.length+1}.</b> ${q.q}</p>`+q.o.map((x,i)=>`<button class="option" onclick="choose(${i})">${'ABCD'[i]}. ${x}</button>`).join('');document.getElementById('score').textContent='सही उत्तर: '+score}
+function choose(i){if(answered)return;answered=true;let q=qs[qi%qs.length];let f=document.getElementById('feedback');if(i===q.a){score++;f.innerHTML='<p class="good">सही उत्तर! '+q.e+'</p>'}else f.innerHTML='<p class="bad">सही उत्तर: '+q.o[q.a]+'. '+q.e+'</p>';document.getElementById('score').textContent='सही उत्तर: '+score}
+function nextQ(){qi++;loadQ()}
+function showTab(id){document.querySelectorAll('.tab').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));if(id==='notes')renderNotes()}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+const taskNames=['आज का मुख्य विषय पढ़ा','कम-से-कम 25 MCQ हल किए','एक उत्तर/निबंध लिखा','आज का रिवीजन किया','समसामयिकी पढ़ी'];
+function renderTasks(){let done=JSON.parse(localStorage.getItem('um_tasks')||'[]');document.getElementById('tasks').innerHTML=taskNames.map((t,i)=>`<label style="display:block;padding:9px"><input type="checkbox" style="width:auto" ${done.includes(i)?'checked':''} onchange="toggleTask(${i},this.checked)"> ${t}</label>`).join('');document.getElementById('progress').textContent=Math.round(done.length/taskNames.length*100)+'%'}
+function toggleTask(i,v){let d=JSON.parse(localStorage.getItem('um_tasks')||'[]');d=v?[...new Set([...d,i])]:d.filter(x=>x!==i);localStorage.setItem('um_tasks',JSON.stringify(d));renderTasks()}
+function resetTasks(){localStorage.removeItem('um_tasks');renderTasks()}
+function saveAnswer(){localStorage.setItem('um_answer',document.getElementById('answer').value);document.getElementById('saved').textContent=' उत्तर सेव हो गया।'}
+document.getElementById('answer').value=localStorage.getItem('um_answer')||'';
+renderNotes();renderTasks();loadQ();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body></html>
